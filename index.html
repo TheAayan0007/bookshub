@@ -4,750 +4,715 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Books Hub — School Study Material</title>
-<link href="https://fonts.googleapis.com/css2?family=Righteous&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --ink:    #0f0e1a;
-  --ink2:   #181728;
-  --ink3:   #201f35;
-  --yellow: #f9d94e;
-  --coral:  #ff6b6b;
-  --mint:   #4ecdc4;
-  --lav:    #a78bfa;
-  --peach:  #ffb347;
-  --sky:    #64d8f7;
-  --green:  #6ee7b7;
-  --pink:   #f472b6;
-  --border: rgba(255,255,255,0.07);
-  --text:   #c4ccd8;
-  --dim:    #5a5a7a;
+:root{
+  --bg:#060810;--bg2:#0b0e1a;--bg3:#0f1423;
+  --surface:#111728;--surface2:#161d2f;
+  --border:rgba(100,180,255,.09);--border2:rgba(100,180,255,.18);
+  --cyan:#00e5ff;--blue:#2979ff;--lime:#76ff03;--amber:#ffd600;
+  --coral:#ff5252;--violet:#b388ff;--mint:#69ffda;--pink:#ff80ab;
+  --text:#cdd5e0;--dim:#4a5568;--dim2:#2d3748;
+  --nav-h:60px;--acc:var(--cyan);
 }
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{
-  background:var(--ink);
-  color:var(--text);
-  font-family:'DM Sans',sans-serif;
-  overflow-x:hidden;
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;line-height:1.6;overflow-x:hidden;}
+
+/* cursor - desktop only */
+@media(pointer:fine){
+  body{cursor:none;}
+  .cur,.cur-ring{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);}
+  .cur{width:7px;height:7px;background:var(--cyan);mix-blend-mode:screen;transition:width .15s,height .15s;}
+  .cur-ring{width:32px;height:32px;border:1.5px solid rgba(0,229,255,.3);z-index:9998;transition:left .1s ease,top .1s ease;}
+  body:has(a:hover) .cur{width:14px;height:14px;background:var(--amber);}
+  body:has(a:hover) .cur-ring{width:50px;height:50px;border-color:rgba(255,214,0,.35);}
 }
 
-/* CUSTOM CURSOR */
-.cur{position:fixed;width:10px;height:10px;background:var(--yellow);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:exclusion;transition:width .15s,height .15s;}
-.cur-ring{position:fixed;width:36px;height:36px;border:2px solid rgba(249,217,78,.3);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .12s ease,top .12s ease,width .3s,height .3s;}
-body:has(a:hover) .cur{width:16px;height:16px;}
-body:has(a:hover) .cur-ring{width:52px;height:52px;border-color:rgba(249,217,78,.5);}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--cyan);}
 
-/* NOISE TEXTURE */
-body::before{
-  content:'';position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:1;opacity:.7;
-}
-
-/* DOT GRID */
-.dot-bg{
-  position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px);
-  background-size:32px 32px;
-}
-
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-track{background:var(--ink);}
-::-webkit-scrollbar-thumb{background:var(--yellow);border-radius:2px;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");opacity:.7;}
 
 /* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:var(--nav-h);
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 48px;height:64px;
-  background:rgba(15,14,26,.85);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border);
-}
-.nav-logo{
-  font-family:'Righteous',cursive;font-size:22px;letter-spacing:2px;
-  display:flex;align-items:center;gap:10px;text-decoration:none;
-}
-.nav-logo .bk{color:var(--yellow);}
-.nav-logo .hub{color:#fff;}
-.nav-logo .dot{width:8px;height:8px;background:var(--coral);border-radius:50%;display:inline-block;margin:0 2px;}
-.nav-links{display:flex;gap:6px;list-style:none;align-items:center;}
-.nav-links a{
-  font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;
-  color:var(--dim);text-decoration:none;text-transform:uppercase;
-  padding:6px 10px;border-radius:4px;
-  transition:color .2s,background .2s;
-}
-.nav-links a:hover{color:#fff;background:rgba(255,255,255,.06);}
-.nav-links a.jee-link{
-  color:var(--yellow);border:1px solid rgba(249,217,78,.25);
-  background:rgba(249,217,78,.05);
-}
-.nav-links a.jee-link:hover{background:rgba(249,217,78,.12);border-color:rgba(249,217,78,.5);}
+  padding:0 clamp(14px,4vw,52px);
+  background:rgba(6,8,16,.9);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);}
+
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
+.logo-hex svg{width:clamp(30px,4vw,38px);height:clamp(30px,4vw,38px);}
+.logo-wordmark{display:flex;flex-direction:column;gap:1px;}
+.logo-name{font-family:'Orbitron',monospace;font-size:clamp(11px,2vw,16px);font-weight:700;letter-spacing:3px;
+  background:linear-gradient(90deg,var(--cyan) 0%,var(--blue) 55%,var(--violet) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;text-transform:uppercase;}
+.logo-sub{font-family:'Space Mono',monospace;font-size:6.5px;letter-spacing:2.5px;color:var(--dim);text-transform:uppercase;}
+
+.nav-links{display:flex;align-items:center;gap:3px;list-style:none;}
+.nav-links a{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--dim);
+  text-decoration:none;text-transform:uppercase;padding:6px 9px;border-radius:3px;transition:color .2s,background .2s;white-space:nowrap;}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.05);}
+.jee-nav{font-family:'Orbitron',monospace !important;font-size:7px !important;letter-spacing:2px !important;
+  color:var(--cyan) !important;border:1px solid rgba(0,229,255,.22) !important;
+  background:rgba(0,229,255,.05) !important;padding:7px 12px !important;}
+.jee-nav:hover{background:rgba(0,229,255,.12) !important;color:#fff !important;border-color:rgba(0,229,255,.5) !important;}
+
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px;z-index:600;cursor:pointer;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--cyan);border-radius:2px;transition:transform .3s,opacity .3s;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+.mob-drawer{display:none;position:fixed;top:var(--nav-h);left:0;right:0;z-index:499;
+  background:rgba(6,8,16,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);
+  padding:12px 18px 18px;flex-direction:column;gap:2px;}
+.mob-drawer.open{display:flex;}
+.mob-drawer a{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--dim);
+  text-decoration:none;text-transform:uppercase;padding:12px 14px;border-bottom:1px solid var(--border);transition:color .2s;}
+.mob-drawer a:hover{color:#fff;}
+.mob-drawer .jee-mob{color:var(--cyan);border:1px solid rgba(0,229,255,.22);background:rgba(0,229,255,.05);
+  border-bottom:1px solid rgba(0,229,255,.22);margin-top:8px;font-family:'Orbitron',monospace !important;
+  font-size:8px;letter-spacing:2px;text-align:center;}
 
 /* ── HERO ── */
-.hero{
-  position:relative;min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:100px 24px 80px;overflow:hidden;
-}
-.hero-blobs{position:absolute;inset:0;pointer-events:none;}
-.blob{position:absolute;border-radius:50%;filter:blur(100px);}
-.blob1{width:500px;height:500px;top:-100px;left:-150px;background:radial-gradient(circle,rgba(78,205,196,.12),transparent 70%);}
-.blob2{width:600px;height:600px;top:20%;right:-200px;background:radial-gradient(circle,rgba(167,139,250,.1),transparent 70%);}
-.blob3{width:400px;height:400px;bottom:-50px;left:30%;background:radial-gradient(circle,rgba(249,217,78,.09),transparent 70%);}
-.blob4{width:350px;height:350px;bottom:10%;right:5%;background:radial-gradient(circle,rgba(255,107,107,.08),transparent 70%);}
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:calc(var(--nav-h) + 48px) clamp(16px,7vw,100px) 80px;overflow:hidden;}
 
-.hero-tag{
-  font-family:'Space Mono',monospace;font-size:10px;letter-spacing:5px;
-  color:var(--mint);text-transform:uppercase;
-  padding:6px 16px;border:1px solid rgba(78,205,196,.25);background:rgba(78,205,196,.06);
-  border-radius:100px;margin-bottom:28px;
-  animation:fadeUp .7s ease both;
-}
-.hero-title{
-  font-family:'Righteous',cursive;
-  font-size:clamp(64px,13vw,152px);
-  line-height:.88;letter-spacing:2px;
-  color:#fff;position:relative;z-index:1;
-  animation:fadeUp .7s .1s ease both;
-}
-.hero-title .accent1{color:var(--yellow);}
-.hero-title .accent2{color:var(--coral);}
-.hero-tagline{
-  margin-top:22px;font-size:17px;font-weight:500;
-  color:var(--dim);max-width:520px;line-height:1.65;
-  animation:fadeUp .7s .2s ease both;
-}
-.hero-tagline strong{color:var(--text);}
-.hero-chips{
-  display:flex;gap:10px;margin-top:30px;justify-content:center;
-  flex-wrap:wrap;animation:fadeUp .7s .3s ease both;
-}
-.chip{
-  padding:6px 16px;border-radius:100px;
-  font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;
-  border:1px solid var(--border);color:var(--dim);
-}
-.chip.y{border-color:rgba(249,217,78,.3);color:var(--yellow);background:rgba(249,217,78,.06);}
-.chip.m{border-color:rgba(78,205,196,.3);color:var(--mint);background:rgba(78,205,196,.06);}
-.chip.c{border-color:rgba(255,107,107,.3);color:var(--coral);background:rgba(255,107,107,.06);}
-.chip.l{border-color:rgba(167,139,250,.3);color:var(--lav);background:rgba(167,139,250,.06);}
+.aurora{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.au{position:absolute;border-radius:50%;filter:blur(90px);opacity:.16;}
+.au1{width:clamp(280px,55vw,680px);height:clamp(280px,55vw,680px);top:-10%;left:-12%;
+  background:radial-gradient(circle,var(--blue),transparent 65%);animation:d1 14s ease-in-out infinite;}
+.au2{width:clamp(230px,45vw,580px);height:clamp(230px,45vw,580px);top:25%;right:-10%;
+  background:radial-gradient(circle,var(--violet),transparent 65%);animation:d2 16s ease-in-out infinite;}
+.au3{width:clamp(180px,38vw,480px);height:clamp(180px,38vw,480px);bottom:-5%;left:32%;
+  background:radial-gradient(circle,var(--cyan),transparent 65%);animation:d1 12s 3s ease-in-out infinite;}
+@keyframes d1{0%,100%{transform:translate(0,0);}50%{transform:translate(28px,-36px);}}
+@keyframes d2{0%,100%{transform:translate(0,0);}50%{transform:translate(-36px,28px);}}
 
-.scroll-cue{
-  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  animation:fadeUp .7s .5s ease both;
-}
+.hero-grid{position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(0,229,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.035) 1px,transparent 1px);
+  background-size:clamp(28px,5vw,56px) clamp(28px,5vw,56px);
+  mask-image:radial-gradient(ellipse 70% 80% at 50% 50%,black,transparent);}
+
+.hero-kicker{font-family:'Space Mono',monospace;font-size:clamp(8px,1.5vw,10px);letter-spacing:4px;
+  color:var(--cyan);text-transform:uppercase;padding:6px 18px;
+  border:1px solid rgba(0,229,255,.2);background:rgba(0,229,255,.05);border-radius:100px;
+  margin-bottom:clamp(16px,3vw,26px);animation:fu .7s ease both;position:relative;z-index:2;}
+
+.hero-h1{font-family:'Orbitron',monospace;font-size:clamp(40px,12vw,140px);font-weight:900;
+  line-height:.9;color:#fff;position:relative;z-index:2;animation:fu .7s .1s ease both;}
+.hero-h1 .w1{display:block;background:linear-gradient(135deg,#fff 40%,rgba(255,255,255,.45));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-h1 .w2{display:block;margin-top:.05em;
+  background:linear-gradient(135deg,var(--cyan),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 40px rgba(0,229,255,.3));}
+
+.hero-desc{margin-top:clamp(14px,2.5vw,22px);font-size:clamp(14px,2vw,17px);font-weight:400;
+  color:rgba(205,213,224,.5);max-width:min(540px,90vw);line-height:1.75;
+  animation:fu .7s .2s ease both;position:relative;z-index:2;}
+.hero-desc strong{color:var(--text);font-weight:600;}
+
+.hero-tags{display:flex;gap:8px;margin-top:clamp(16px,3vw,26px);justify-content:center;
+  flex-wrap:wrap;animation:fu .7s .3s ease both;position:relative;z-index:2;}
+.htag{padding:5px 13px;border-radius:100px;font-family:'Space Mono',monospace;
+  font-size:clamp(7px,1.1vw,9px);letter-spacing:1.5px;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.08);color:var(--dim);}
+.htag.c{border-color:rgba(0,229,255,.25);color:var(--cyan);background:rgba(0,229,255,.05);}
+.htag.a{border-color:rgba(255,214,0,.25);color:var(--amber);background:rgba(255,214,0,.05);}
+.htag.v{border-color:rgba(179,136,255,.25);color:var(--violet);background:rgba(179,136,255,.05);}
+.htag.g{border-color:rgba(118,255,3,.25);color:var(--lime);background:rgba(118,255,3,.05);}
+
+.cta-row{display:flex;gap:12px;margin-top:clamp(20px,3.5vw,32px);justify-content:center;
+  flex-wrap:wrap;animation:fu .7s .4s ease both;position:relative;z-index:2;}
+.cta-a,.cta-b{display:flex;align-items:center;gap:8px;text-decoration:none;
+  padding:clamp(11px,1.8vw,14px) clamp(20px,4vw,30px);border-radius:3px;transition:all .3s;
+  font-family:'Orbitron',monospace;font-size:clamp(8px,1.2vw,10px);font-weight:700;letter-spacing:2.5px;text-transform:uppercase;}
+.cta-a{background:var(--cyan);color:var(--bg);box-shadow:0 0 28px rgba(0,229,255,.3);}
+.cta-a:hover{box-shadow:0 0 50px rgba(0,229,255,.55);transform:translateY(-2px);}
+.cta-b{border:1px solid var(--border2);color:var(--text);background:rgba(255,255,255,.03);}
+.cta-b:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.2);}
+
+.scroll-cue{position:absolute;bottom:clamp(16px,3vw,28px);left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;animation:fu .7s .6s ease both;z-index:2;}
 .scroll-cue span{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;}
-.scroll-bar{width:1px;height:48px;background:linear-gradient(to bottom,var(--yellow),transparent);animation:pulse 2s ease-in-out infinite;}
-@keyframes pulse{0%,100%{transform:scaleY(1);transform-origin:top;}50%{transform:scaleY(.3);transform-origin:top;}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+.scl{width:1px;height:44px;background:linear-gradient(to bottom,var(--cyan),transparent);animation:sp 2.2s ease-in-out infinite;}
+@keyframes sp{0%,100%{transform:scaleY(1);transform-origin:top;}55%{transform:scaleY(.2);transform-origin:top;}}
+@keyframes fu{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 
 /* ── STATS ── */
-.stats{
-  display:flex;justify-content:center;max-width:900px;
-  margin:0 auto 0;border:1px solid var(--border);
-  position:relative;z-index:2;
-}
-.stat{
-  flex:1;padding:24px 16px;text-align:center;
-  border-right:1px solid var(--border);
-}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);
+  max-width:min(960px,94vw);margin:0 auto;position:relative;z-index:2;}
+.stat{padding:clamp(16px,3vw,26px) 12px;text-align:center;border-right:1px solid var(--border);}
 .stat:last-child{border-right:none;}
-.stat-n{font-family:'Righteous',cursive;font-size:42px;color:var(--yellow);line-height:1;}
-.stat-l{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2.5px;color:var(--dim);text-transform:uppercase;margin-top:4px;}
+.stat-n{font-family:'Orbitron',monospace;font-size:clamp(26px,5vw,44px);font-weight:700;
+  color:var(--cyan);line-height:1;text-shadow:0 0 24px rgba(0,229,255,.4);}
+.stat-l{font-family:'Space Mono',monospace;font-size:clamp(7px,1vw,9px);letter-spacing:2px;
+  color:var(--dim);text-transform:uppercase;margin-top:5px;}
 
-/* ── SECTION ── */
-.sec{padding:80px 40px;max-width:1200px;margin:0 auto;position:relative;}
-.sec-head{
-  display:flex;align-items:center;gap:16px;margin-bottom:44px;
-  padding-bottom:20px;border-bottom:1px solid var(--border);
-  position:relative;
-}
-.sec-head::before{
-  content:'';position:absolute;bottom:-1px;left:0;width:80px;height:2px;
-  background:var(--accent-clr,var(--yellow));border-radius:2px;
-}
-.class-badge{
-  font-family:'Righteous',cursive;font-size:13px;letter-spacing:2px;
-  padding:4px 14px;border-radius:4px;
-  background:var(--accent-clr,var(--yellow));color:var(--ink);
-}
-.sec-title{font-family:'Righteous',cursive;font-size:clamp(28px,4vw,48px);letter-spacing:1px;color:#fff;line-height:1;}
-.sec-sub{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--accent-clr,var(--yellow));text-transform:uppercase;margin-top:4px;}
+/* ── SECTIONS ── */
+.sec{padding:clamp(55px,8vw,95px) clamp(14px,5vw,52px);max-width:min(1280px,100%);margin:0 auto;position:relative;}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border) 20%,var(--border) 80%,transparent);
+  max-width:min(1280px,100%);margin:0 auto;}
 
-.divider{height:1px;background:linear-gradient(to right,transparent,var(--border) 30%,var(--border) 70%,transparent);max-width:1200px;margin:0 auto;}
+.sec-head{display:flex;align-items:flex-start;gap:clamp(10px,2vw,22px);margin-bottom:clamp(28px,5vw,48px);
+  padding-bottom:clamp(14px,2.5vw,22px);border-bottom:1px solid var(--border);position:relative;}
+.sec-head::after{content:'';position:absolute;bottom:-1px;left:0;width:clamp(48px,7vw,88px);height:2px;
+  background:var(--acc);border-radius:2px;box-shadow:0 0 12px var(--acc);}
+.sec-num{font-family:'Orbitron',monospace;font-size:clamp(32px,6vw,80px);font-weight:900;line-height:1;
+  color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.06);user-select:none;flex-shrink:0;}
+.sec-meta{flex:1;}
+.sec-label{font-family:'Space Mono',monospace;font-size:clamp(7.5px,1.2vw,10px);letter-spacing:4px;
+  text-transform:uppercase;color:var(--acc);margin-bottom:6px;}
+.sec-title{font-family:'Orbitron',monospace;font-size:clamp(20px,4.5vw,52px);font-weight:700;
+  letter-spacing:1px;color:#fff;line-height:1.05;}
+
+.sec-glow{position:absolute;width:450px;height:450px;border-radius:50%;filter:blur(130px);
+  pointer-events:none;z-index:0;top:-80px;right:-80px;background:var(--acc);opacity:.06;}
 
 /* ── CARD GRID ── */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px;}
-.card{
-  background:var(--ink2);border:1px solid var(--border);
-  padding:26px 28px;position:relative;overflow:hidden;
-  transition:border-color .3s,transform .25s;
-}
-.card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,rgba(255,255,255,.012));pointer-events:none;}
-.card:hover{border-color:rgba(255,255,255,.12);transform:translateY(-3px);}
-.card-label{
-  font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2.5px;
-  text-transform:uppercase;color:var(--dim);margin-bottom:10px;
-}
-.card-title{
-  font-family:'Righteous',cursive;font-size:22px;letter-spacing:.5px;
-  color:#fff;margin-bottom:8px;
-}
-.card-desc{font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:18px;font-weight:500;}
-.card-tip{
-  padding:9px 14px;font-family:'Space Mono',monospace;font-size:10px;
-  color:var(--dim);margin-bottom:14px;
-  border-left:2px solid var(--accent-clr,var(--yellow));
-  background:rgba(255,255,255,.02);
-}
-.card-tip strong{color:#fff;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:2px;position:relative;z-index:1;}
+.card{background:var(--surface);border:1px solid var(--border);padding:clamp(18px,3vw,28px);
+  position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;}
+.card::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.012) 0%,transparent 50%);pointer-events:none;}
+.card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--acc),transparent);opacity:0;transition:opacity .3s;}
+.card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.4);}
+.card:hover::after{opacity:1;}
+
+.card-label{font-family:'Space Mono',monospace;font-size:clamp(7px,1.1vw,9px);letter-spacing:2px;
+  text-transform:uppercase;color:var(--dim);margin-bottom:10px;}
+.card-title{font-family:'Orbitron',monospace;font-size:clamp(14px,2.5vw,20px);font-weight:700;
+  letter-spacing:.5px;color:#fff;margin-bottom:10px;line-height:1.25;}
+.card-desc{font-size:clamp(12px,1.6vw,14px);color:var(--dim);line-height:1.7;margin-bottom:16px;}
+.card-tip{padding:9px 14px;font-family:'Space Mono',monospace;font-size:clamp(8px,1.1vw,10px);
+  color:var(--dim);margin-bottom:14px;line-height:1.6;border-left:2px solid var(--acc);background:rgba(255,255,255,.02);}
+.card-tip strong{color:rgba(255,255,255,.65);}
 
 /* ── BUTTONS ── */
 .btn-col{display:flex;flex-direction:column;gap:8px;}
-.btn{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 16px;border:1px solid var(--border);
-  color:var(--text);text-decoration:none;
-  font-size:13px;font-weight:700;letter-spacing:.3px;
-  position:relative;overflow:hidden;
-  transition:color .25s,border-color .25s;cursor:none;
-}
-.btn::before{
-  content:'';position:absolute;inset:0;
-  background:var(--bc,var(--yellow));
-  transform:translateX(-101%);
-  transition:transform .35s cubic-bezier(.4,0,.2,1);
-}
-.btn:hover{color:var(--ink);border-color:transparent;}
+.btn{display:flex;align-items:center;justify-content:space-between;
+  padding:clamp(10px,1.8vw,13px) clamp(13px,2.5vw,18px);border:1px solid var(--border);
+  background:transparent;color:var(--text);text-decoration:none;cursor:pointer;
+  font-family:'Outfit',sans-serif;font-size:clamp(12px,1.8vw,14px);font-weight:600;
+  position:relative;overflow:hidden;transition:color .25s,border-color .25s;}
+.btn::before{content:'';position:absolute;inset:0;background:var(--bc,var(--cyan));
+  transform:translateX(-101%);transition:transform .35s cubic-bezier(.4,0,.2,1);}
+.btn:hover{color:var(--bg);border-color:transparent;}
 .btn:hover::before{transform:translateX(0);}
 .btn .t,.btn .a{position:relative;z-index:1;}
-.btn .a{font-size:15px;transition:transform .2s;}
-.btn:hover .a{transform:translateX(4px);}
+.btn .a{font-size:clamp(13px,2vw,16px);transition:transform .2s;}
+.btn:hover .a{transform:translateX(5px);}
+.btn.cy{--bc:var(--cyan);}.btn.bl{--bc:var(--blue);}.btn.am{--bc:var(--amber);}
+.btn.co{--bc:var(--coral);}.btn.vi{--bc:var(--violet);}.btn.li{--bc:var(--lime);}
+.btn.mi{--bc:var(--mint);}.btn.pk{--bc:var(--pink);}
 
-.btn.y{--bc:var(--yellow);}
-.btn.m{--bc:var(--mint);}
-.btn.c{--bc:var(--coral);}
-.btn.l{--bc:var(--lav);}
-.btn.p{--bc:var(--peach);}
-.btn.s{--bc:var(--sky);}
-.btn.g{--bc:var(--green);}
-.btn.pk{--bc:var(--pink);}
-
-/* multi-link small buttons */
-.btn-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
-.pill{
-  display:flex;align-items:center;gap:6px;
-  padding:9px 14px;border:1px solid var(--border);
-  color:var(--dim);text-decoration:none;
-  font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;
-  text-transform:uppercase;position:relative;overflow:hidden;
-  transition:color .2s,border-color .2s;cursor:none;border-radius:3px;
-  flex:1;justify-content:center;
-}
-.pill::before{content:'';position:absolute;inset:0;background:var(--pc,var(--yellow));transform:scale(0);border-radius:50%;transition:transform .4s ease;}
-.pill:hover{color:var(--ink);border-color:transparent;}
+/* pill row */
+.mlabel{display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;
+  font-size:clamp(7px,1.1vw,9px);letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin:12px 0 6px;}
+.mlabel::before,.mlabel::after{content:'';flex:1;height:1px;background:var(--border);}
+.pill-row{display:flex;gap:6px;flex-wrap:wrap;}
+.pill{display:flex;align-items:center;justify-content:center;gap:5px;flex:1;min-width:90px;
+  padding:clamp(9px,1.5vw,11px) 10px;border:1px solid var(--border);background:var(--surface2);
+  color:var(--dim);text-decoration:none;cursor:pointer;
+  font-family:'Space Mono',monospace;font-size:clamp(7px,1.1vw,9px);letter-spacing:1px;text-transform:uppercase;
+  position:relative;overflow:hidden;transition:color .2s,border-color .2s;}
+.pill::before{content:'';position:absolute;inset:0;background:var(--pc,var(--cyan));
+  transform:scale(0);border-radius:50%;transition:transform .4s ease;}
+.pill:hover{color:var(--bg);border-color:transparent;}
 .pill:hover::before{transform:scale(4);border-radius:0;}
 .pill span{position:relative;z-index:1;}
-.pill.y{--pc:var(--yellow);}
-.pill.m{--pc:var(--mint);}
-.pill.c{--pc:var(--coral);}
-.pill.l{--pc:var(--lav);}
-.pill.p{--pc:var(--peach);}
-.pill.s{--pc:var(--sky);}
-.pill.g{--pc:var(--green);}
+.pill.cy{--pc:var(--cyan);}.pill.bl{--pc:var(--blue);}.pill.am{--pc:var(--amber);}
+.pill.vi{--pc:var(--violet);}.pill.mi{--pc:var(--mint);}
+
+/* ── JEE PROMO ── */
+.jee-promo{grid-column:1/-1;background:linear-gradient(135deg,rgba(0,229,255,.04),rgba(41,121,255,.05));
+  border:1px solid rgba(0,229,255,.16);padding:clamp(22px,4vw,36px);position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.jee-promo::before{content:'JEE';position:absolute;right:-8px;top:-20px;font-family:'Orbitron',monospace;
+  font-size:clamp(60px,12vw,120px);font-weight:900;color:rgba(0,229,255,.04);pointer-events:none;line-height:1;}
+.jp-title{font-family:'Orbitron',monospace;font-size:clamp(15px,3vw,24px);font-weight:700;color:#fff;margin-bottom:6px;}
+.jp-sub{font-size:clamp(12px,1.8vw,14px);color:var(--dim);max-width:460px;}
+.jee-promo .btn{min-width:clamp(160px,22vw,220px);flex-shrink:0;}
 
 /* ── REVEAL ── */
-.rv{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease;}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .5s ease,transform .5s ease;}
 .rv.in{opacity:1;transform:none;}
-.d1{transition-delay:.05s;}.d2{transition-delay:.12s;}.d3{transition-delay:.2s;}.d4{transition-delay:.28s;}
-
-/* ── SUBJECT INTRO BANNERS ── */
-.subj-banner{
-  display:flex;align-items:center;gap:16px;
-  padding:14px 22px;margin-bottom:18px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.02);
-}
-.subj-icon{font-size:22px;}
-.subj-text{font-family:'Space Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:1px;line-height:1.7;}
-.subj-text strong{color:#fff;}
-
-/* ── MEGA SECTION ── */
-.mega-card{
-  background:var(--ink2);border:1px solid var(--border);
-  padding:32px;position:relative;overflow:hidden;
-}
-.mega-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-
-/* ── GLOW ACCENT ── */
-.sec-glow{position:absolute;width:400px;height:400px;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;top:0;right:0;opacity:.12;}
+.d1{transition-delay:.06s;}.d2{transition-delay:.13s;}.d3{transition-delay:.2s;}.d4{transition-delay:.28s;}
 
 /* ── FOOTER ── */
-footer{
-  padding:56px 40px 36px;
-  border-top:1px solid var(--border);
-  text-align:center;position:relative;z-index:2;
-}
-.footer-logo{font-family:'Righteous',cursive;font-size:40px;letter-spacing:4px;color:var(--yellow);margin-bottom:12px;}
-footer p{font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:2px;line-height:2;}
-.footer-note{margin-top:16px;font-size:10px;color:rgba(255,255,255,.08);}
+footer{padding:clamp(36px,6vw,60px) clamp(14px,5vw,48px) clamp(22px,4vw,38px);
+  border-top:1px solid var(--border);text-align:center;position:relative;z-index:2;}
+.foot-logo{font-family:'Orbitron',monospace;font-size:clamp(18px,4vw,34px);font-weight:900;letter-spacing:4px;
+  background:linear-gradient(90deg,var(--cyan),var(--blue) 60%,var(--violet));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+footer p{font-family:'Space Mono',monospace;font-size:clamp(8px,1.2vw,10px);color:var(--dim);letter-spacing:2px;line-height:2.2;}
+.foot-jee{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:9px 20px;
+  border:1px solid rgba(0,229,255,.2);background:rgba(0,229,255,.04);
+  font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2.5px;color:var(--cyan);
+  text-decoration:none;text-transform:uppercase;transition:background .2s,border-color .2s;}
+.foot-jee:hover{background:rgba(0,229,255,.1);border-color:rgba(0,229,255,.4);}
 
-/* ── MOBILE ── */
-@media(max-width:768px){
-  nav{padding:0 16px;}
-  .nav-links{gap:2px;}
-  .nav-links a{padding:5px 6px;font-size:8px;}
-  .hero{padding:90px 16px 60px;}
-  .sec{padding:60px 16px;}
-  .grid{grid-template-columns:1fr;}
-  .mega-grid{grid-template-columns:1fr;}
-  .stats{flex-wrap:wrap;}
-  .stat{min-width:50%;border-right:none;border-bottom:1px solid var(--border);}
-  .stats .stat:last-child{border-bottom:none;}
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+}
+@media(max-width:640px){
+  :root{--nav-h:54px;}
+  .stats{grid-template-columns:1fr 1fr;}
+  .stat:nth-child(2){border-right:none;}
+  .stat:nth-child(3){border-top:1px solid var(--border);}
+  .stat:nth-child(4){border-top:1px solid var(--border);border-right:none;}
+  .cta-row{flex-direction:column;align-items:stretch;}
+  .cta-a,.cta-b{justify-content:center;}
+  .jee-promo{flex-direction:column;}
+  .jee-promo .btn{width:100%;min-width:unset;}
+}
+@media(max-width:400px){
+  .pill-row{flex-direction:column;}
+  .pill{min-width:unset;width:100%;}
+}
+@media(min-width:1400px){
+  .sec{padding:100px 80px;}
+  .grid{grid-template-columns:repeat(3,1fr);}
 }
 </style>
 </head>
 <body>
-
 <div class="cur" id="cur"></div>
-<div class="cur-ring" id="ring"></div>
-<div class="dot-bg"></div>
+<div class="cur-ring" id="crng"></div>
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">
-    <span class="bk">Books</span><span class="dot"></span><span class="hub">Hub</span>
+  <a class="logo" href="#">
+    <div class="logo-hex">
+      <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#00e5ff"/>
+            <stop offset="50%" stop-color="#2979ff"/>
+            <stop offset="100%" stop-color="#b388ff"/>
+          </linearGradient>
+        </defs>
+        <polygon points="19,1.5 35,10.5 35,27.5 19,36.5 3,27.5 3,10.5" fill="none" stroke="url(#lg)" stroke-width="1.2"/>
+        <polygon points="19,6 31,13 31,25 19,32 7,25 7,13" fill="rgba(0,229,255,.06)" stroke="url(#lg)" stroke-width=".4"/>
+        <line x1="3" y1="10.5" x2="9" y2="14" stroke="url(#lg)" stroke-width=".5" opacity=".4"/>
+        <line x1="35" y1="10.5" x2="29" y2="14" stroke="url(#lg)" stroke-width=".5" opacity=".4"/>
+        <line x1="3" y1="27.5" x2="9" y2="24" stroke="url(#lg)" stroke-width=".5" opacity=".4"/>
+        <line x1="35" y1="27.5" x2="29" y2="24" stroke="url(#lg)" stroke-width=".5" opacity=".4"/>
+        <text x="19" y="23" font-family="monospace" font-size="10.5" font-weight="bold" fill="url(#lg)" text-anchor="middle">BH</text>
+      </svg>
+    </div>
+    <div class="logo-wordmark">
+      <div class="logo-name">Books Hub</div>
+      <div class="logo-sub">Study Portal</div>
+    </div>
   </a>
   <ul class="nav-links">
-    <li><a href="#class6-8">Class 6–8</a></li>
-    <li><a href="#class9">Class 9</a></li>
-    <li><a href="#class10">Class 10</a></li>
-    <li><a href="#class11">Class 11</a></li>
-    <li><a href="#class12">Class 12</a></li>
-    <li><a href="#hcverma">HC Verma</a></li>
+    <li><a href="#c68">Class 6–8</a></li>
+    <li><a href="#c9">Class 9</a></li>
+    <li><a href="#c10">Class 10</a></li>
+    <li><a href="#c11">Class 11</a></li>
+    <li><a href="#c12">Class 12</a></li>
+    <li><a href="#hcv">HC Verma</a></li>
     <li><a href="#packs">Big Packs</a></li>
-    <li><a href="https://jeebooks.vercel.app/" target="_blank" class="jee-link">⚡ JEE Books</a></li>
+    <li><a href="https://jeebooks.vercel.app/" target="_blank" class="jee-nav">⚡ JEE Books</a></li>
   </ul>
+  <button class="hamburger" id="ham" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="mob-drawer" id="mob">
+  <a href="#c68">Class 6 – 8</a>
+  <a href="#c9">Class 9</a>
+  <a href="#c10">Class 10</a>
+  <a href="#c11">Class 11</a>
+  <a href="#c12">Class 12</a>
+  <a href="#hcv">HC Verma</a>
+  <a href="#packs">Big Packs</a>
+  <a href="https://jeebooks.vercel.app/" target="_blank" class="jee-mob">⚡ JEE Books Hub</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-blobs">
-    <div class="blob blob1"></div>
-    <div class="blob blob2"></div>
-    <div class="blob blob3"></div>
-    <div class="blob blob4"></div>
+  <div class="aurora"><div class="au au1"></div><div class="au au2"></div><div class="au au3"></div></div>
+  <div class="hero-grid"></div>
+  <div class="hero-kicker">// Free School Study Material — Class 6 to 12</div>
+  <h1 class="hero-h1"><span class="w1">Books</span><span class="w2">Hub</span></h1>
+  <p class="hero-desc">All the books you need for <strong>Class 6 to 12</strong> — RS Aggarwal, HC Verma 2025, S Chand, PW, Cengage. <strong>Free. Always.</strong></p>
+  <div class="hero-tags">
+    <div class="htag c">RS Aggarwal</div>
+    <div class="htag a">HC Verma 2025</div>
+    <div class="htag v">PW · S Chand</div>
+    <div class="htag g">100% Free</div>
   </div>
-  <div class="hero-tag">// Free School Study Material Hub</div>
-  <h1 class="hero-title">
-    <span class="accent1">Books</span><br>
-    <span class="accent2">Hub</span>
-  </h1>
-  <p class="hero-tagline">All the premium study books for <strong>Class 6 to 12</strong> — RS Aggarwal, HC Verma, S Chand, PW, Cengage — <strong>free</strong>, organized, ready to download.</p>
-  <div class="hero-chips">
-    <div class="chip y">📚 Class 6 to 12</div>
-    <div class="chip m">RS Aggarwal · HC Verma</div>
-    <div class="chip c">PW · Cengage · S Chand</div>
-    <div class="chip l">100% Free Downloads</div>
+  <div class="cta-row">
+    <a href="#c68" class="cta-a">Browse Books ↓</a>
+    <a href="https://jeebooks.vercel.app/" target="_blank" class="cta-b">⚡ JEE Books Hub</a>
   </div>
-  <div class="scroll-cue">
-    <span>Scroll Down</span>
-    <div class="scroll-bar"></div>
-  </div>
+  <div class="scroll-cue"><span>Scroll</span><div class="scl"></div></div>
 </section>
 
 <!-- STATS -->
-<div class="stats rv" style="margin:0 40px 0;max-width:none;">
-  <div class="stat"><div class="stat-n">30+</div><div class="stat-l">Books & PDFs</div></div>
-  <div class="stat"><div class="stat-n">7</div><div class="stat-l">Classes Covered</div></div>
-  <div class="stat"><div class="stat-n">3+</div><div class="stat-l">Mirror Links</div></div>
-  <div class="stat"><div class="stat-n">FREE</div><div class="stat-l">Always Free</div></div>
+<div class="stats rv">
+  <div class="stat"><div class="stat-n">30+</div><div class="stat-l">PDFs &amp; Books</div></div>
+  <div class="stat"><div class="stat-n">7</div><div class="stat-l">Classes</div></div>
+  <div class="stat"><div class="stat-n">3×</div><div class="stat-l">Mirror Links</div></div>
+  <div class="stat"><div class="stat-n">FREE</div><div class="stat-l">Always</div></div>
 </div>
 
-<!-- ══════════════ CLASS 6–8 ══════════════ -->
-<section class="sec" id="class6-8" style="--accent-clr:var(--mint);">
+<!-- CLASS 6–8 -->
+<section class="sec" id="c68" style="--acc:var(--mint);">
   <div class="sec-glow" style="background:var(--mint);"></div>
   <div class="sec-head rv">
-    <div class="class-badge" style="background:var(--mint);">Class 6 · 7 · 8</div>
-    <div>
-      <div class="sec-title" style="color:#fff;">Foundation<br>Books</div>
-      <div class="sec-sub" style="color:var(--mint);">// RS Aggarwal Series</div>
+    <div class="sec-num">01</div>
+    <div class="sec-meta">
+      <div class="sec-label">// Foundation Years — Build Strong Basics</div>
+      <div class="sec-title">Class 6 · 7 · 8</div>
     </div>
   </div>
   <div class="grid">
     <div class="card rv d1">
-      <div class="card-label">Mathematics</div>
+      <div class="card-label">Mathematics · Class 6</div>
       <div class="card-title">RS Aggarwal — Class 6</div>
-      <div class="card-desc">The classic maths book that builds your arithmetic, fractions, geometry, and algebra fundamentals strong.</div>
+      <div class="card-desc">Arithmetic, fractions, geometry and algebra foundations — the perfect start to building a strong maths base.</div>
       <div class="btn-col">
-        <a href="https://www.mediafire.com/file/ic3o3j3zs0g54mo/6+RS+Aggarwal+.pdf/file" class="btn m" target="_blank">
+        <a href="https://www.mediafire.com/file/ic3o3j3zs0g54mo/6+RS+Aggarwal+.pdf/file" class="btn mi" target="_blank">
           <span class="t">Download — Mediafire</span><span class="a">↗</span>
         </a>
       </div>
     </div>
     <div class="card rv d2">
-      <div class="card-label">Mathematics</div>
+      <div class="card-label">Mathematics · Class 7</div>
       <div class="card-title">RS Aggarwal — Class 7</div>
-      <div class="card-desc">Covers rational numbers, triangles, congruence, data handling, and mensuration with clarity.</div>
+      <div class="card-desc">Rational numbers, triangles, congruence, data handling, and mensuration with crystal-clear examples.</div>
       <div class="btn-col">
-        <a href="https://www.mediafire.com/file/lcj13wj9d0dqqkr/7_RS_Aggarwal_.pdf/file" class="btn m" target="_blank">
+        <a href="https://www.mediafire.com/file/lcj13wj9d0dqqkr/7_RS_Aggarwal_.pdf/file" class="btn mi" target="_blank">
           <span class="t">Download — Mediafire</span><span class="a">↗</span>
         </a>
       </div>
     </div>
     <div class="card rv d3">
-      <div class="card-label">Mathematics</div>
+      <div class="card-label">Mathematics · Class 8</div>
       <div class="card-title">RS Aggarwal — Class 8</div>
-      <div class="card-desc">Solid coverage of squares, cubes, linear equations, quadrilaterals, and intro to algebra.</div>
+      <div class="card-desc">Squares, cubes, linear equations, quadrilaterals, intro to algebra — the complete Class 8 maths package.</div>
       <div class="btn-col">
-        <a href="https://www.mediafire.com/file/x26f8832g9x7gcr/8+RS+Aggarwal+.pdf/file" class="btn m" target="_blank">
+        <a href="https://www.mediafire.com/file/x26f8832g9x7gcr/8+RS+Aggarwal+.pdf/file" class="btn mi" target="_blank">
           <span class="t">Download — Mediafire</span><span class="a">↗</span>
         </a>
       </div>
     </div>
   </div>
 </section>
-
 <div class="divider"></div>
 
-<!-- ══════════════ CLASS 9 ══════════════ -->
-<section class="sec" id="class9" style="--accent-clr:var(--sky);">
-  <div class="sec-glow" style="background:var(--sky);"></div>
+<!-- CLASS 9 -->
+<section class="sec" id="c9" style="--acc:var(--cyan);">
+  <div class="sec-glow" style="background:var(--cyan);"></div>
   <div class="sec-head rv">
-    <div class="class-badge" style="background:var(--sky);">Class 9</div>
-    <div>
-      <div class="sec-title">Class 9<br>Books</div>
-      <div class="sec-sub" style="color:var(--sky);">// RS Aggarwal + HC Verma</div>
+    <div class="sec-num">02</div>
+    <div class="sec-meta">
+      <div class="sec-label">// RS Aggarwal + HC Verma Physics</div>
+      <div class="sec-title">Class 9</div>
     </div>
   </div>
   <div class="grid">
     <div class="card rv d1">
-      <div class="card-label">Mathematics</div>
+      <div class="card-label">Mathematics · Class 9</div>
       <div class="card-title">RS Aggarwal — Class 9</div>
-      <div class="card-desc">Covers number systems, polynomials, lines & angles, Heron's formula, statistics, and more.</div>
+      <div class="card-desc">Number systems, polynomials, lines &amp; angles, Heron's formula, statistics — everything for Class 9 maths.</div>
       <div class="btn-col">
-        <a href="https://www.mediafire.com/file/6drcdv5up2507cb/IX+R+S+AGGARWAL.pdf/file" class="btn s" target="_blank">
+        <a href="https://www.mediafire.com/file/6drcdv5up2507cb/IX+R+S+AGGARWAL.pdf/file" class="btn cy" target="_blank">
           <span class="t">Download — Mediafire</span><span class="a">↗</span>
         </a>
       </div>
     </div>
     <div class="card rv d2">
-      <div class="card-label">Physics — Concepts of Physics</div>
+      <div class="card-label">Physics · Class 9</div>
       <div class="card-title">HC Verma — Class 9</div>
-      <div class="card-desc">HC Verma for Class 9 — build your physics intuition early with one of India's greatest physics authors.</div>
-      <div class="card-tip"><strong>2 Mirror Links</strong> — both are identical, pick whichever works fastest.</div>
-      <div class="btn-col">
-        <a href="https://www.mediafire.com/file/6uvkyn454r23o22/CLASS+9+HC+VERMA.pdf/file" class="btn s" target="_blank">
-          <span class="t">Download — Mediafire</span><span class="a">↗</span>
-        </a>
-        <a href="https://mega.nz/file/fTRlAApA#RFdowOKbnmzeyOZU38v-dPqM8Q4zVP4B-mQqkawz1NY" class="btn l" target="_blank">
-          <span class="t">Download — Mega.nz</span><span class="a">↗</span>
-        </a>
+      <div class="card-desc">Build physics intuition early — motion, force, gravitation, sound and light explained brilliantly by H.C. Verma. Two fast mirrors available.</div>
+      <div class="card-tip"><strong>Tip:</strong> Mediafire is usually fastest. Use Mega if it's slow.</div>
+      <div class="mlabel">Download Mirrors</div>
+      <div class="pill-row">
+        <a href="https://www.mediafire.com/file/6uvkyn454r23o22/CLASS+9+HC+VERMA.pdf/file" class="pill cy" target="_blank"><span>📥 Mediafire</span></a>
+        <a href="https://mega.nz/file/fTRlAApA#RFdowOKbnmzeyOZU38v-dPqM8Q4zVP4B-mQqkawz1NY" class="pill vi" target="_blank"><span>☁ Mega.nz</span></a>
       </div>
     </div>
   </div>
 </section>
-
 <div class="divider"></div>
 
-<!-- ══════════════ CLASS 10 ══════════════ -->
-<section class="sec" id="class10" style="--accent-clr:var(--coral);">
+<!-- CLASS 10 -->
+<section class="sec" id="c10" style="--acc:var(--coral);">
   <div class="sec-glow" style="background:var(--coral);"></div>
   <div class="sec-head rv">
-    <div class="class-badge" style="background:var(--coral);">Class 10</div>
-    <div>
-      <div class="sec-title">Class 10<br>Books</div>
-      <div class="sec-sub" style="color:var(--coral);">// Boards Prep Arsenal</div>
+    <div class="sec-num">03</div>
+    <div class="sec-meta">
+      <div class="sec-label">// Board Exam Arsenal — Score 95%+</div>
+      <div class="sec-title">Class 10</div>
     </div>
   </div>
   <div class="grid">
     <div class="card rv d1">
-      <div class="card-label">Mathematics</div>
+      <div class="card-label">Mathematics · Class 10</div>
       <div class="card-title">RS Aggarwal — Class 10</div>
-      <div class="card-desc">The complete Class 10 maths companion — real numbers, quadratics, triangles, circles, AP, stats, and probability.</div>
+      <div class="card-desc">Real numbers, quadratics, triangles, circles, AP, statistics and probability — all chapters with detailed solved examples.</div>
       <div class="btn-col">
-        <a href="https://www.mediafire.com/file/1h0tzlxvsfy5cnd/R.S.+Aggrawal+mathematics+book+class+10+_+(2).pdf/file" class="btn c" target="_blank">
+        <a href="https://www.mediafire.com/file/1h0tzlxvsfy5cnd/R.S.+Aggrawal+mathematics+book+class+10+_+(2).pdf/file" class="btn co" target="_blank">
           <span class="t">Download — Mediafire</span><span class="a">↗</span>
         </a>
       </div>
     </div>
     <div class="card rv d2">
-      <div class="card-label">Physics</div>
+      <div class="card-label">Physics · Class 10</div>
       <div class="card-title">HC Verma — Class 10</div>
-      <div class="card-desc">HC Verma's physics for Class 10 — light, electricity, magnetism, and modern physics explained with depth.</div>
+      <div class="card-desc">Light, electricity, magnetism and modern physics — HC Verma's depth takes your board prep far beyond just NCERT.</div>
       <div class="btn-col">
-        <a href="https://www.mediafire.com/file/3ooc0rdvt85ict1/Class+10th+HC+Verma+Physics.pdf/file" class="btn c" target="_blank">
+        <a href="https://www.mediafire.com/file/3ooc0rdvt85ict1/Class+10th+HC+Verma+Physics.pdf/file" class="btn co" target="_blank">
           <span class="t">Download — Mediafire</span><span class="a">↗</span>
         </a>
       </div>
     </div>
     <div class="card rv d3">
-      <div class="card-label">Science (All Topics)</div>
+      <div class="card-label">Science (Phy + Chem + Bio) · Class 10</div>
       <div class="card-title">S Chand — Class 10</div>
-      <div class="card-desc">The comprehensive S Chand Science book for Class 10 covering Physics, Chemistry, and Biology in full.</div>
+      <div class="card-desc">Comprehensive Science covering Physics, Chemistry and Biology together — ideal for board exam preparation.</div>
       <div class="btn-col">
-        <a href="https://www.mediafire.com/file/umwbwndqteca3gi/S+CHAND+CLASS+10.rar/file" class="btn p" target="_blank">
+        <a href="https://www.mediafire.com/file/umwbwndqteca3gi/S+CHAND+CLASS+10.rar/file" class="btn am" target="_blank">
           <span class="t">Download — Mediafire (.rar)</span><span class="a">↗</span>
         </a>
       </div>
     </div>
     <div class="card rv d1">
-      <div class="card-label">Handwritten Notes</div>
+      <div class="card-label">Handwritten Notes · Class 10 Maths</div>
       <div class="card-title">Ritik Sir — Maths Made Easy</div>
-      <div class="card-desc">Ritik Sir's legendary handwritten notes for Class 10 Maths — concise, exam-focused, loved by thousands of students.</div>
-      <div class="card-tip"><strong>3 Mirror Links Available</strong> — all identical content.</div>
-      <div class="btn-col">
-        <a href="https://drive.google.com/file/d/1l2CXNkkfDZ3JqcsFSRukBu66bFPYBjvU/view" class="btn y" target="_blank">
-          <span class="t">Google Drive</span><span class="a">↗</span>
-        </a>
-        <a href="https://www.mediafire.com/file/g2klvpcdxvb4p75/Ritik+sir+maths+made+easy+book.pdf/file" class="btn c" target="_blank">
-          <span class="t">Mediafire</span><span class="a">↗</span>
-        </a>
-        <a href="https://mega.nz/file/bLZC0bqJ#Fh_Oiosm8uZjEhrp1LHdSlIX22Afn02sYtCPlL4Ww4c" class="btn l" target="_blank">
-          <span class="t">Mega.nz</span><span class="a">↗</span>
-        </a>
+      <div class="card-desc">Legendary handwritten notes loved by thousands — concise, exam-targeted, every Class 10 Maths chapter covered brilliantly.</div>
+      <div class="card-tip"><strong>3 mirrors available</strong> — use whichever loads fastest for you.</div>
+      <div class="mlabel">3 Download Mirrors</div>
+      <div class="pill-row">
+        <a href="https://drive.google.com/file/d/1l2CXNkkfDZ3JqcsFSRukBu66bFPYBjvU/view" class="pill cy" target="_blank"><span>📂 Drive</span></a>
+        <a href="https://www.mediafire.com/file/g2klvpcdxvb4p75/Ritik+sir+maths+made+easy+book.pdf/file" class="pill am" target="_blank"><span>📥 Media</span></a>
+        <a href="https://mega.nz/file/bLZC0bqJ#Fh_Oiosm8uZjEhrp1LHdSlIX22Afn02sYtCPlL4Ww4c" class="pill vi" target="_blank"><span>☁ Mega</span></a>
       </div>
     </div>
     <div class="card rv d2">
-      <div class="card-label">Science — PW 2026 Edition</div>
-      <div class="card-title">PW Science Q&A Bank</div>
-      <div class="card-desc">Physics Wallah's 2026 Science Concept & Question Bank by Rakshak Dua, Samriddhi Sharma, Sunil Hignorani. Third Edition — essential for boards.</div>
-      <div class="card-tip"><strong>3rd Edition 2026</strong> — fully updated for current syllabus.</div>
-      <div class="btn-col">
-        <a href="https://drive.google.com/file/d/1G7Za9k5K3WNGmI0JTRQzXinR2ZeHLMM-/view?usp=sharing" class="btn g" target="_blank">
-          <span class="t">Google Drive</span><span class="a">↗</span>
-        </a>
-        <a href="https://www.mediafire.com/file/1239oame5nod6kw/pw_science_concept_and_question_bank_book_2026_third_edition_1.pdf/file" class="btn c" target="_blank">
-          <span class="t">Mediafire</span><span class="a">↗</span>
-        </a>
-        <a href="https://mega.nz/file/iGIWgTTb#UhZsU9L1pM-IrLsqidE8EVQ3wxZSFIa-ZfFr38UIWgk" class="btn l" target="_blank">
-          <span class="t">Mega.nz</span><span class="a">↗</span>
-        </a>
+      <div class="card-label">PW Science · 3rd Edition 2026</div>
+      <div class="card-title">PW Science Q&amp;A Concept Bank</div>
+      <div class="card-desc">Physics Wallah's 2026 Science Concept &amp; Question Bank by Rakshak Dua, Samriddhi Sharma, Sunil Hignorani — essential for boards.</div>
+      <div class="card-tip"><strong>2026 — Third Edition</strong> updated for current syllabus.</div>
+      <div class="mlabel">3 Download Mirrors</div>
+      <div class="pill-row">
+        <a href="https://drive.google.com/file/d/1G7Za9k5K3WNGmI0JTRQzXinR2ZeHLMM-/view?usp=sharing" class="pill cy" target="_blank"><span>📂 Drive</span></a>
+        <a href="https://www.mediafire.com/file/1239oame5nod6kw/pw_science_concept_and_question_bank_book_2026_third_edition_1.pdf/file" class="pill am" target="_blank"><span>📥 Media</span></a>
+        <a href="https://mega.nz/file/iGIWgTTb#UhZsU9L1pM-IrLsqidE8EVQ3wxZSFIa-ZfFr38UIWgk" class="pill vi" target="_blank"><span>☁ Mega</span></a>
       </div>
     </div>
   </div>
 </section>
-
 <div class="divider"></div>
 
-<!-- ══════════════ CLASS 11 ══════════════ -->
-<section class="sec" id="class11" style="--accent-clr:var(--lav);">
-  <div class="sec-glow" style="background:var(--lav);"></div>
+<!-- CLASS 11 -->
+<section class="sec" id="c11" style="--acc:var(--violet);">
+  <div class="sec-glow" style="background:var(--violet);"></div>
   <div class="sec-head rv">
-    <div class="class-badge" style="background:var(--lav);">Class 11</div>
-    <div>
-      <div class="sec-title">Class 11<br>Books</div>
-      <div class="sec-sub" style="color:var(--lav);">// JEE Foundation Starts Here</div>
+    <div class="sec-num">04</div>
+    <div class="sec-meta">
+      <div class="sec-label">// JEE Foundation Begins Here</div>
+      <div class="sec-title">Class 11</div>
     </div>
   </div>
   <div class="grid">
     <div class="card rv d1">
-      <div class="card-label">Mathematics</div>
+      <div class="card-label">Mathematics · Class 11</div>
       <div class="card-title">RS Aggarwal — Class 11</div>
-      <div class="card-desc">Sets, relations, trigonometry, complex numbers, sequences, straight lines, conic sections — all covered with great problem sets for both boards and JEE foundation.</div>
-      <div class="card-tip"><strong>Mega.nz Link</strong> — fast download, no ads.</div>
+      <div class="card-desc">Sets, relations, trigonometry, complex numbers, sequences, straight lines, conic sections — deep problem sets for boards and JEE foundation.</div>
       <div class="btn-col">
-        <a href="https://mega.nz/file/vLJRDSqJ#Fh9jyplTlrOc9XzjcTqFlHjgrlJLIe1DK-_OSEKVKSk" class="btn l" target="_blank">
+        <a href="https://mega.nz/file/vLJRDSqJ#Fh9jyplTlrOc9XzjcTqFlHjgrlJLIe1DK-_OSEKVKSk" class="btn vi" target="_blank">
           <span class="t">Download — Mega.nz</span><span class="a">↗</span>
         </a>
       </div>
     </div>
     <div class="card rv d2">
-      <div class="card-label">Physics — 2025 Edition</div>
+      <div class="card-label">Physics · 2025–26 Edition · Vol. 1</div>
       <div class="card-title">HC Verma Vol. 1 — 2025</div>
-      <div class="card-desc">The brand new 2025–26 edition of Concepts of Physics Volume 1. Mechanics, waves, thermodynamics — the sacred text of Indian physics education.</div>
-      <div class="card-tip"><strong>2025-26 Updated Edition</strong> — latest version with revised content.</div>
-      <div class="btn-col">
-        <a href="https://www.mediafire.com/file/cicgh5ss2puw3e5/2025-26+HCV+Volume+1+.pdf/file" class="btn l" target="_blank">
-          <span class="t">Mediafire — Vol. 1</span><span class="a">↗</span>
-        </a>
-        <a href="https://mega.nz/file/fKpTFaLK#mEKMIULkcDlOoZNCodZoPgkm-GEMhrzogH13YP-a4n4" class="btn m" target="_blank">
-          <span class="t">Mega.nz — Vol. 1</span><span class="a">↗</span>
-        </a>
+      <div class="card-desc">Brand new 2025–26 revised edition — mechanics, waves, thermodynamics. The sacred text of Indian physics education. Two download mirrors.</div>
+      <div class="card-tip"><strong>2025–26 Edition</strong> — latest revised version available.</div>
+      <div class="mlabel">Download Mirrors</div>
+      <div class="pill-row">
+        <a href="https://www.mediafire.com/file/cicgh5ss2puw3e5/2025-26+HCV+Volume+1+.pdf/file" class="pill cy" target="_blank"><span>📥 Mediafire</span></a>
+        <a href="https://mega.nz/file/fKpTFaLK#mEKMIULkcDlOoZNCodZoPgkm-GEMhrzogH13YP-a4n4" class="pill vi" target="_blank"><span>☁ Mega.nz</span></a>
       </div>
     </div>
   </div>
 </section>
-
 <div class="divider"></div>
 
-<!-- ══════════════ CLASS 12 ══════════════ -->
-<section class="sec" id="class12" style="--accent-clr:var(--peach);">
-  <div class="sec-glow" style="background:var(--peach);"></div>
+<!-- CLASS 12 -->
+<section class="sec" id="c12" style="--acc:var(--amber);">
+  <div class="sec-glow" style="background:var(--amber);"></div>
   <div class="sec-head rv">
-    <div class="class-badge" style="background:var(--peach);">Class 12</div>
-    <div>
-      <div class="sec-title">Class 12<br>Books</div>
-      <div class="sec-sub" style="color:var(--peach);">// Boards + JEE Mains Final Prep</div>
+    <div class="sec-num">05</div>
+    <div class="sec-meta">
+      <div class="sec-label">// Boards + JEE Mains Final Push</div>
+      <div class="sec-title">Class 12</div>
     </div>
   </div>
   <div class="grid">
     <div class="card rv d1">
-      <div class="card-label">Mathematics</div>
+      <div class="card-label">Mathematics · Class 12</div>
       <div class="card-title">RS Aggarwal — Class 12</div>
-      <div class="card-desc">Relations & functions, matrices, determinants, integrals, differential equations, vectors, 3D, probability — the complete Class 12 maths treatment with thorough exercises.</div>
-      <div class="btn-col">
-        <a href="https://www.mediafire.com/file/oj2apum5yiwlndm/RS+Aggarwal+Class+12.pdf/file" class="btn p" target="_blank">
-          <span class="t">Mediafire — Class 12</span><span class="a">↗</span>
-        </a>
-        <a href="https://mega.nz/file/WL5FVYzR#JyfmGzszRmEWVJofCT2fYzqvRSIF0t3IAAFuaIbAxvg" class="btn l" target="_blank">
-          <span class="t">Mega.nz — Class 12</span><span class="a">↗</span>
-        </a>
+      <div class="card-desc">Relations, matrices, determinants, integrals, differential equations, vectors, 3D geometry, probability — the complete Class 12 maths treatment.</div>
+      <div class="mlabel">Download Mirrors</div>
+      <div class="pill-row">
+        <a href="https://www.mediafire.com/file/oj2apum5yiwlndm/RS+Aggarwal+Class+12.pdf/file" class="pill am" target="_blank"><span>📥 Mediafire</span></a>
+        <a href="https://mega.nz/file/WL5FVYzR#JyfmGzszRmEWVJofCT2fYzqvRSIF0t3IAAFuaIbAxvg" class="pill vi" target="_blank"><span>☁ Mega.nz</span></a>
       </div>
     </div>
     <div class="card rv d2">
-      <div class="card-label">Physics — 2025 Edition</div>
+      <div class="card-label">Physics · 2025 Edition · Vol. 2</div>
       <div class="card-title">HC Verma Vol. 2 — 2025</div>
-      <div class="card-desc">Brand new 2025 edition of HCV Volume 2 — electrostatics, magnetism, current electricity, optics, and modern physics.</div>
-      <div class="card-tip"><strong>Latest 2025 Edition</strong> by @bunchstudy — most up-to-date version available.</div>
-      <div class="btn-col">
-        <a href="https://www.mediafire.com/file/79hm3eip2tpkm19/New+Hcv+Volume+2+@bunchstudy.pdf/file" class="btn p" target="_blank">
-          <span class="t">Mediafire — Vol. 2</span><span class="a">↗</span>
-        </a>
-        <a href="https://mega.nz/file/DH5DBBoR#jR4nX7PpB3fGidP9-DzMB2EuHFEjCTrDDod1KDYThPA" class="btn l" target="_blank">
-          <span class="t">Mega.nz — Vol. 2</span><span class="a">↗</span>
-        </a>
+      <div class="card-desc">Electrostatics, magnetism, current electricity, optics and modern physics — the 2025 updated Volume 2. Essential for Class 12 and JEE.</div>
+      <div class="card-tip"><strong>2025 Edition</strong> — updated latest version by @bunchstudy.</div>
+      <div class="mlabel">Download Mirrors</div>
+      <div class="pill-row">
+        <a href="https://www.mediafire.com/file/79hm3eip2tpkm19/New+Hcv+Volume+2+@bunchstudy.pdf/file" class="pill am" target="_blank"><span>📥 Mediafire</span></a>
+        <a href="https://mega.nz/file/DH5DBBoR#jR4nX7PpB3fGidP9-DzMB2EuHFEjCTrDDod1KDYThPA" class="pill vi" target="_blank"><span>☁ Mega.nz</span></a>
       </div>
     </div>
   </div>
 </section>
-
 <div class="divider"></div>
 
-<!-- ══════════════ HC VERMA ══════════════ -->
-<section class="sec" id="hcverma" style="--accent-clr:var(--yellow);">
-  <div class="sec-glow" style="background:var(--yellow);"></div>
+<!-- HC VERMA -->
+<section class="sec" id="hcv" style="--acc:var(--lime);">
+  <div class="sec-glow" style="background:var(--lime);"></div>
   <div class="sec-head rv">
-    <div class="class-badge" style="background:var(--yellow);color:var(--ink);">HC Verma</div>
-    <div>
+    <div class="sec-num">06</div>
+    <div class="sec-meta">
+      <div class="sec-label">// 2025 Editions — All Three Volumes</div>
       <div class="sec-title">HC Verma<br>Complete Set</div>
-      <div class="sec-sub" style="color:var(--yellow);">// 2025 Editions — All Classes</div>
-    </div>
-  </div>
-  <div class="card rv">
-    <div class="card-label">Concepts of Physics — 2025-26 Full Collection</div>
-    <div class="card-title">HC Verma Vol. 1 + Vol. 2 (2025)</div>
-    <div class="card-desc" style="max-width:700px;">The complete 2025–26 updated editions of both volumes — the definitive physics textbook for Classes 11 & 12, JEE Mains, and Advanced. Multiple download mirrors so you always get a fast link.</div>
-    <div style="margin-top:20px;">
-      <div class="subj-banner">
-        <div class="subj-icon">📖</div>
-        <div class="subj-text"><strong>Volume 1</strong> — Mechanics, Waves, Thermodynamics (Class 11) — 2025-26 Edition</div>
-      </div>
-      <div class="btn-row">
-        <a href="https://www.mediafire.com/file/cicgh5ss2puw3e5/2025-26+HCV+Volume+1+.pdf/file" class="pill y" target="_blank"><span>📥 Mediafire</span></a>
-        <a href="https://mega.nz/file/fKpTFaLK#mEKMIULkcDlOoZNCodZoPgkm-GEMhrzogH13YP-a4n4" class="pill l" target="_blank"><span>☁️ Mega.nz</span></a>
-      </div>
-      <div class="subj-banner" style="margin-top:16px;">
-        <div class="subj-icon">📗</div>
-        <div class="subj-text"><strong>Volume 2</strong> — Electricity, Magnetism, Optics, Modern Physics (Class 12) — 2025 Edition</div>
-      </div>
-      <div class="btn-row">
-        <a href="https://www.mediafire.com/file/79hm3eip2tpkm19/New+Hcv+Volume+2+@bunchstudy.pdf/file" class="pill y" target="_blank"><span>📥 Mediafire</span></a>
-        <a href="https://mega.nz/file/DH5DBBoR#jR4nX7PpB3fGidP9-DzMB2EuHFEjCTrDDod1KDYThPA" class="pill l" target="_blank"><span>☁️ Mega.nz</span></a>
-      </div>
-      <div class="subj-banner" style="margin-top:16px;">
-        <div class="subj-icon">📕</div>
-        <div class="subj-text"><strong>HC Verma — Class 9</strong> — Foundation edition for younger students</div>
-      </div>
-      <div class="btn-row">
-        <a href="https://www.mediafire.com/file/6uvkyn454r23o22/CLASS+9+HC+VERMA.pdf/file" class="pill m" target="_blank"><span>📥 Mediafire</span></a>
-        <a href="https://mega.nz/file/fTRlAApA#RFdowOKbnmzeyOZU38v-dPqM8Q4zVP4B-mQqkawz1NY" class="pill l" target="_blank"><span>☁️ Mega.nz</span></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ══════════════ BIG PACKS ══════════════ -->
-<section class="sec" id="packs" style="--accent-clr:var(--green);">
-  <div class="sec-glow" style="background:var(--green);"></div>
-  <div class="sec-head rv">
-    <div class="class-badge" style="background:var(--green);color:var(--ink);">All Classes</div>
-    <div>
-      <div class="sec-title">Big Study<br>Packs</div>
-      <div class="sec-sub" style="color:var(--green);">// Class 6 to 12 Everything</div>
     </div>
   </div>
   <div class="grid">
     <div class="card rv d1">
-      <div class="card-label">Complete Bundle</div>
-      <div class="card-title">Study Material 6→12</div>
-      <div class="card-desc">One giant pack covering all subjects, all classes — Class 6 all the way to Class 12. Notes, books, and materials in a single download.</div>
-      <div class="btn-col">
-        <a href="https://www.mediafire.com/file/g3x3akoc7b0klur/STUDY+MATERIAL+CLASS+6+TO+12.rar/file" class="btn g" target="_blank">
-          <span class="t">Download All (Mediafire .rar)</span><span class="a">↗</span>
-        </a>
+      <div class="card-label">Class 9 · Foundation</div>
+      <div class="card-title">HC Verma — Class 9</div>
+      <div class="card-desc">Start with HC Verma early. Motion, force, gravitation, sound — physics the right way from Class 9 itself.</div>
+      <div class="mlabel">Download Mirrors</div>
+      <div class="pill-row">
+        <a href="https://www.mediafire.com/file/6uvkyn454r23o22/CLASS+9+HC+VERMA.pdf/file" class="pill cy" target="_blank"><span>📥 Mediafire</span></a>
+        <a href="https://mega.nz/file/fTRlAApA#RFdowOKbnmzeyOZU38v-dPqM8Q4zVP4B-mQqkawz1NY" class="pill vi" target="_blank"><span>☁ Mega.nz</span></a>
       </div>
     </div>
     <div class="card rv d2">
-      <div class="card-label">Mirror Link</div>
-      <div class="card-title">Class 6–12 Mirror Pack</div>
-      <div class="card-desc">A full mirror of Class 6 to 12th study material on Mega.nz — faster download, no wait time, no ads.</div>
-      <div class="card-tip"><strong>Mirror:</strong> Same content as the study material pack — use this if Mediafire is slow.</div>
-      <div class="btn-col">
-        <a href="https://mega.nz/file/eCBFka4K#8q3sv84QZYBA4tuBy750_aG9AbtCXa8CTojfKVJoDc8" class="btn l" target="_blank">
-          <span class="t">Mirror Download — Mega.nz</span><span class="a">↗</span>
-        </a>
+      <div class="card-label">Class 11 · 2025–26 Edition</div>
+      <div class="card-title">HC Verma Vol. 1 — 2025</div>
+      <div class="card-desc">Mechanics, waves, thermodynamics — the updated 2025-26 revised Volume 1. The most used physics book in India.</div>
+      <div class="mlabel">Download Mirrors</div>
+      <div class="pill-row">
+        <a href="https://www.mediafire.com/file/cicgh5ss2puw3e5/2025-26+HCV+Volume+1+.pdf/file" class="pill cy" target="_blank"><span>📥 Mediafire</span></a>
+        <a href="https://mega.nz/file/fKpTFaLK#mEKMIULkcDlOoZNCodZoPgkm-GEMhrzogH13YP-a4n4" class="pill vi" target="_blank"><span>☁ Mega.nz</span></a>
       </div>
     </div>
-    <div class="card rv d3" style="background:rgba(110,231,183,.04);border-color:rgba(110,231,183,.15);">
-      <div class="card-label">🔥 Going to JEE?</div>
-      <div class="card-title">JEE Books Hub</div>
-      <div class="card-desc">All premium JEE study material — Allen, PW, Cengage, FIITJEE modules, test series, DPPs — completely free. Visit our sister site.</div>
-      <div class="btn-col" style="margin-top:8px;">
-        <a href="https://jeebooks.vercel.app/" class="btn y" target="_blank">
-          <span class="t">Visit JEE Books Hub ⚡</span><span class="a">↗</span>
-        </a>
+    <div class="card rv d3">
+      <div class="card-label">Class 12 · 2025 Edition</div>
+      <div class="card-title">HC Verma Vol. 2 — 2025</div>
+      <div class="card-desc">Electrostatics, magnetism, optics, modern physics — updated Volume 2. The companion to Vol. 1 for complete physics mastery.</div>
+      <div class="mlabel">Download Mirrors</div>
+      <div class="pill-row">
+        <a href="https://www.mediafire.com/file/79hm3eip2tpkm19/New+Hcv+Volume+2+@bunchstudy.pdf/file" class="pill cy" target="_blank"><span>📥 Mediafire</span></a>
+        <a href="https://mega.nz/file/DH5DBBoR#jR4nX7PpB3fGidP9-DzMB2EuHFEjCTrDDod1KDYThPA" class="pill vi" target="_blank"><span>☁ Mega.nz</span></a>
       </div>
     </div>
   </div>
 </section>
+<div class="divider"></div>
 
-<!-- FOOTER -->
+<!-- BIG PACKS -->
+<section class="sec" id="packs" style="--acc:var(--cyan);">
+  <div class="sec-glow" style="background:var(--cyan);"></div>
+  <div class="sec-head rv">
+    <div class="sec-num">07</div>
+    <div class="sec-meta">
+      <div class="sec-label">// Everything in One Archive</div>
+      <div class="sec-title">Big Study<br>Packs</div>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="card rv d1">
+      <div class="card-label">Complete Bundle · All Classes</div>
+      <div class="card-title">Study Material — Class 6 to 12</div>
+      <div class="card-desc">One giant pack covering all subjects from Class 6 to Class 12 — notes, books, and materials in a single archive download.</div>
+      <div class="btn-col">
+        <a href="https://www.mediafire.com/file/g3x3akoc7b0klur/STUDY+MATERIAL+CLASS+6+TO+12.rar/file" class="btn cy" target="_blank">
+          <span class="t">Download — Mediafire (.rar)</span><span class="a">↗</span>
+        </a>
+      </div>
+    </div>
+    <div class="card rv d2">
+      <div class="card-label">Mirror Link · Class 6–12</div>
+      <div class="card-title">Full Mirror — Mega.nz</div>
+      <div class="card-desc">Same complete study material pack on Mega.nz — faster download, no wait time, no ads. Use this if Mediafire is throttled.</div>
+      <div class="btn-col">
+        <a href="https://mega.nz/file/eCBFka4K#8q3sv84QZYBA4tuBy750_aG9AbtCXa8CTojfKVJoDc8" class="btn vi" target="_blank">
+          <span class="t">Download — Mega.nz Mirror</span><span class="a">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="jee-promo rv d3">
+      <div>
+        <div class="jp-title">⚡ Heading to JEE?</div>
+        <p class="jp-sub">Get Allen modules, PW packs, Cengage books, FIITJEE material, 10 test series and DPPs — all completely free at our JEE Books Hub.</p>
+      </div>
+      <a href="https://jeebooks.vercel.app/" target="_blank" class="btn cy">
+        <span class="t">Visit JEE Books Hub</span><span class="a">↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <div class="footer-logo">Books Hub</div>
-  <p>
-    All materials collected from public sources for educational purposes only.<br>
-    Study hard. Score big. 🎯
-  </p>
-  <p class="footer-note">JEE Books Hub available at jeebooks.vercel.app</p>
+  <div class="foot-logo">Books Hub</div>
+  <p>All materials from public sources · Educational use only<br>Study smart. Score big. 🎯</p>
+  <a href="https://jeebooks.vercel.app/" target="_blank" class="foot-jee">⚡ JEE Books Hub →</a>
 </footer>
 
 <script>
-/* CURSOR */
-const cur=document.getElementById('cur'),ring=document.getElementById('ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-(function loop(){
-  cur.style.left=mx+'px';cur.style.top=my+'px';
-  rx+=(mx-rx)*.14;ry+=(my-ry)*.14;
-  ring.style.left=rx+'px';ring.style.top=ry+'px';
-  requestAnimationFrame(loop);
-})();
+/* cursor */
+const cur=document.getElementById('cur'),crng=document.getElementById('crng');
+if(window.matchMedia('(pointer:fine)').matches&&cur){
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;},{passive:true});
+  (function loop(){
+    cur.style.left=mx+'px';cur.style.top=my+'px';
+    rx+=(mx-rx)*.13;ry+=(my-ry)*.13;
+    crng.style.left=rx+'px';crng.style.top=ry+'px';
+    requestAnimationFrame(loop);
+  })();
+}
 
-/* REVEAL ON SCROLL */
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});
-},{threshold:.07});
+/* hamburger */
+const ham=document.getElementById('ham'),mob=document.getElementById('mob');
+ham.addEventListener('click',()=>{ham.classList.toggle('open');mob.classList.toggle('open');});
+mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');mob.classList.remove('open');}));
+
+/* reveal */
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.06,rootMargin:'0px 0px -24px 0px'});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
-/* ACTIVE NAV HIGHLIGHT */
-const secs=document.querySelectorAll('section[id]');
-const links=document.querySelectorAll('.nav-links a:not(.jee-link)');
+/* active nav */
+const secs=[...document.querySelectorAll('section[id]')];
+const nas=[...document.querySelectorAll('.nav-links a:not(.jee-nav)')];
 window.addEventListener('scroll',()=>{
-  let cur='';
-  secs.forEach(s=>{if(scrollY>=s.offsetTop-180)cur=s.id;});
-  links.forEach(a=>{
-    const isActive=a.getAttribute('href')==='#'+cur;
-    a.style.color=isActive?'#fff':'';
-    a.style.background=isActive?'rgba(255,255,255,.07)':'';
-  });
-},{ passive:true });
+  const y=scrollY+80;let c='';
+  secs.forEach(s=>{if(y>=s.offsetTop)c=s.id;});
+  nas.forEach(a=>{const on=a.getAttribute('href')==='#'+c;a.style.color=on?'#fff':'';a.style.background=on?'rgba(255,255,255,.06)':'';});
+},{passive:true});
 </script>
 </body>
 </html>
